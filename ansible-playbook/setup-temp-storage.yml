@@ -1,0 +1,27 @@
+- hosts: temp_storage_host
+  become: true
+  vars:
+    ansible_python_interpreter: "/usr/bin/env python3"
+    temp_storage_path: "/nfs"
+  tasks:
+    - name: Creating temp storage directory
+      file: 
+        path: "{{ temp_storage_path }}"
+        state: directory 
+        mode: 0777
+    - name: Setting up the temp storage service
+      shell: bash -x install_nfs.sh service {{ temp_storage_path }}
+- hosts: archiver_host:dispatcher_host
+  become: true
+  vars:
+    ansible_python_interpreter: "/usr/bin/env python3"
+    temp_storage_path: "/nfs"
+    temp_storage_host_ip: "{{ groups.temp_storage_host[0] }}"
+  tasks:
+    - name: Creating temp storage directory
+      file: 
+        path: "{{ temp_storage_path }}"
+        state: directory 
+        mode: 0777
+    - name: Setting up the temp storage client
+      shell: bash -x install_nfs.sh client {{ temp_storage_host_ip }} {{ temp_storage_path }} {{ temp_storage_path }}
