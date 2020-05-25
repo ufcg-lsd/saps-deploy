@@ -15,7 +15,7 @@ readonly EXECUTION_TAGS_FILE=execution_script_tags.json
 IMAGE_TAG=latest
 
 ### Checks for all configuration files
-check_conf_dir() {
+check_conf_files() {
   local CONF_FILES_PATH=${1}
   if [ ! -d ${CONF_FILES_PATH} ] 
   then
@@ -78,7 +78,7 @@ run() {
     "${ARCHIVER_IMAGE}":"${IMAGE_TAG}"
 }
 
-# TODO Create flag for allow remove current service if it exists
+# TODO Create flag for allow not remove current service if it exists
 main() {
   if [ "$#" -ne 1 ]; then
       echo "Error. ${USAGE}"

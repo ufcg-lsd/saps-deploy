@@ -81,7 +81,7 @@ run() {
     "${DISPATCHER_IMAGE}":"${IMAGE_TAG}"
 }
 
-# TODO Create flag for allow remove current service if it exists
+# TODO Create flag for allow not remove current service if it exists
 main() {
   if [ "$#" -ne 1 ]; then
       echo "Error. ${USAGE}"
