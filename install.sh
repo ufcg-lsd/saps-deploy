@@ -1,5 +1,5 @@
 #!/bin/bash
-# This script goal is to generate the Ansible hosts and ansible.cfg files
+# This script goal is to generate the Ansible hosts and ansible.cfg files and run the ansible playbook.
 
 readonly HOSTS_CONF_FILE_PATH="./hosts.conf"
 readonly ANSIBLE_FILES_DIR_PATH="./ansible-playbook"
