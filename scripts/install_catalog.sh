@@ -85,7 +85,7 @@ run() {
     "${CATALOG_IMAGE}":"${IMAGE_TAG}"
 }
 
-# TODO Create flag for allow not remove current service if it exists
+# TODO Create a flag to make the service removal optional
 main() {
   if [ "$#" -ne 1 ]; then
       echo "Error. ${USAGE}"
