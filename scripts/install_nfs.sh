@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Check if a dir is exported by the NFS server
+# check if there is an exported dir from NFS server
 is_a_export_dir() {
   local LOCAL_EXPORT_DIR=${3}
   if showmount -e localhost | grep -q "${LOCAL_EXPORT_DIR}"; then
@@ -22,13 +22,13 @@ setup_nfs_client() {
     exit 0
   fi
 
-  # Checks whether the directory is already mounted by the same server
+  # Checks if the directory is already mounted by the same server
   if nfsstat --nfs -m | grep -q "${LOCAL_EXPORT_DIR} from ${NFS_SERVER}:${NFS_EXPORT_DIR}"; then
     echo "The ${LOCAL_EXPORT_DIR}  directory is already mounted"
     exit 0
   fi
 
-  # Checks whether the directory is mounted by another server
+  # Checks if the directory is mounted by another server
   if mountpoint -q -- ${LOCAL_EXPORT_DIR} ; then
     echo "Umounting current ${LOCAL_EXPORT_DIR} ..."
     umount -f -l ${LOCAL_EXPORT_DIR} 
