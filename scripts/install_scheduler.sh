@@ -66,7 +66,7 @@ remove_service() {
 run() {
   # Getting absolute path because docker not allow use of relative path
   local CONF_FILES_PATH=$(get_absolute_path ${1})
-  echo "---> Starting Dispatcher Service..."
+  echo "---> Starting Scheduler Service..."
   echo "---> Configuration files path: ${CONF_FILES_PATH}"
   docker run -dit \
     --name "${CONTAINER_NAME}" \
