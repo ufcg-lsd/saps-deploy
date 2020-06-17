@@ -1,0 +1,153 @@
+- hosts: catalog_host
+  vars:
+    source_conf_catalog_host: ../conf-files
+    target_conf: ./conf-files
+    install_catalog_script: install_catalog.sh
+  tasks:
+    - name: Removing files from earlier installation in catalog host
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - "{{ target_conf }}/catalog.env"
+        - "./{{ install_catalog_script }}"
+    - name: Create conf files directory
+      file: 
+        path: "{{ target_conf }}"
+        state: directory 
+        mode: 0755
+    - name: Copying catalog.env to catalog host
+      copy:
+        src: "{{ source_conf_catalog_host }}/catalog.env"
+        dest: "{{ target_conf }}/catalog.env"
+        mode: 0644
+    - name: Copying {{ install_catalog_script }} to catalog host
+      copy:
+        src: "../scripts/{{ install_catalog_script }}"
+        dest: "./{{ install_catalog_script }}"
+        mode: 0700
+
+- hosts: dispatcher_host
+  vars:
+    source_conf_dispatcher_host: ../conf-files
+    target_conf: ./conf-files
+    install_dispatcher_script: install_dispatcher.sh
+    setup_temp_storage_script: install_nfs.sh
+  tasks:
+    - name: Removing files from earlier installation in dispatcher host
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - "{{ target_conf }}/dispatcher.conf"
+        - "{{ target_conf }}/log4j.properties"
+        - "{{ target_conf }}/execution_script_tags.json"
+        - "./{{ install_dispatcher_script }}"
+        - "./{{ setup_temp_storage_script }}"
+    - name: Create conf files directory
+      file: 
+        path: "{{ target_conf }}"
+        state: directory 
+        mode: 0755
+    - name: Copying conf-files to dispatcher host
+      copy: src={{ item.src }} dest={{ item.dest }}
+      with_items:
+        - { src: "{{ source_conf_dispatcher_host }}/dispatcher.conf", dest: "{{ target_conf }}/dispatcher.conf", mode: 0644 }
+        - { src: "{{ source_conf_dispatcher_host }}/log4j.properties", dest: "{{ target_conf }}/log4j.properties", mode: 0644 }
+        - { src: "{{ source_conf_dispatcher_host }}/execution_script_tags.json", dest: "{{ target_conf }}/execution_script_tags.json", mode: 0644 }
+    - name: Copying {{ install_dispatcher_script }} to dispatcher host
+      copy:
+        src: "../scripts/{{ install_dispatcher_script }}"
+        dest: "./{{ install_dispatcher_script }}"
+        mode: 0700
+    - name: Copying {{ setup_temp_storage_script }} to dispatcher host
+      copy:
+        src: "../scripts/{{ setup_temp_storage_script }}"
+        dest: "./{{ setup_temp_storage_script }}"
+        mode: 0700
+
+- hosts: scheduler_host
+  vars:
+    source_conf_scheduler_host: ../conf-files
+    target_conf: ./conf-files
+    install_scheduler_script: install_scheduler.sh
+  tasks:
+    - name: Removing files from earlier installation in scheduler host
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - "{{ target_conf }}/scheduler.conf"
+        - "{{ target_conf }}/log4j.properties"
+        - "{{ target_conf }}/execution_script_tags.json"
+        - "./{{ install_scheduler_script }}"
+    - name: Create conf files directory
+      file: 
+        path: "{{ target_conf }}"
+        state: directory 
+        mode: 0755
+    - name: Copying conf-files to scheduler host
+      copy: src={{ item.src }} dest={{ item.dest }}
+      with_items:
+        - { src: "{{ source_conf_scheduler_host }}/scheduler.conf", dest: "{{ target_conf }}/scheduler.conf", mode: 0644 }
+        - { src: "{{ source_conf_scheduler_host }}/log4j.properties", dest: "{{ target_conf }}/log4j.properties", mode: 0644 }
+        - { src: "{{ source_conf_scheduler_host }}/execution_script_tags.json", dest: "{{ target_conf }}/execution_script_tags.json", mode: 0644 }
+    - name: Copying {{ install_scheduler_script }} to scheduler host
+      copy:
+        src: "../scripts/{{ install_scheduler_script }}"
+        dest: "./{{ install_scheduler_script }}"
+        mode: 0700
+
+- hosts: archiver_host
+  vars:
+    source_conf_archiver_host: ../conf-files
+    target_conf: ./conf-files
+    install_archiver_script: install_archiver.sh
+    setup_temp_storage_script: install_nfs.sh
+  tasks:
+    - name: Removing files from earlier installation in archiver host
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - "{{ target_conf }}/archiver.conf"
+        - "{{ target_conf }}/log4j.properties"
+        - "./{{ install_archiver_script }}"
+        - "./{{ setup_temp_storage_script }}"
+    - name: Create conf files directory
+      file: 
+        path: "{{ target_conf }}"
+        state: directory 
+        mode: 0755
+    - name: Copying conf-files to archiver host
+      copy: src={{ item.src }} dest={{ item.dest }}
+      with_items:
+        - { src: "{{ source_conf_archiver_host }}/archiver.conf", dest: "{{ target_conf }}/archiver.conf", mode: 0644 }
+        - { src: "{{ source_conf_archiver_host }}/log4j.properties", dest: "{{ target_conf }}/log4j.properties", mode: 0644 }
+        - { src: "{{ source_conf_archiver_host }}/execution_script_tags.json", dest: "{{ target_conf }}/execution_script_tags.json", mode: 0644 }
+    - name: Copying {{ install_archiver_script }} to archiver host
+      copy:
+        src: "../scripts/{{ install_archiver_script }}"
+        dest: "./{{ install_archiver_script }}"
+        mode: 0700
+    - name: Copying {{ setup_temp_storage_script }} to archiver host
+      copy:
+        src: "../scripts/{{ setup_temp_storage_script }}"
+        dest: "./{{ setup_temp_storage_script }}"
+        mode: 0700
+
+- hosts: temp_storage_host
+  vars:
+    setup_temp_storage_script: install_nfs.sh
+  tasks:
+    - name: Removing files from earlier installation in temp storage host
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - "./{{ setup_temp_storage_script }}"
+    - name: Copying {{ setup_temp_storage_script }} to temporary storage host
+      copy:
+        src: "../scripts/{{ setup_temp_storage_script }}"
+        dest: "./{{ setup_temp_storage_script }}"
+        mode: 0700

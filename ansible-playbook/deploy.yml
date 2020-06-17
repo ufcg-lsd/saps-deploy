@@ -1,0 +1,5 @@
+---
+- import_playbook: install-dependencies.yml
+- import_playbook: send-files-to-hosts.yml
+- import_playbook: setup-temp-storage.yml
+- import_playbook: start-services.yml

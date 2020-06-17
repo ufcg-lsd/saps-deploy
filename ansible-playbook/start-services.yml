@@ -1,0 +1,29 @@
+---
+- hosts: catalog_host
+  vars:
+    confs_dir: ./conf-files
+  tasks:
+    - name: Deploying and starting catalog service in catalog host
+      shell: bash install_catalog.sh {{ confs_dir }}
+      become: yes
+- hosts: dispatcher_host
+  vars:
+    confs_dir: ./conf-files
+  tasks:
+    - name: Deploying and starting dispatcher service in dispatcher host
+      shell: bash install_dispatcher.sh {{ confs_dir }}
+      become: yes
+- hosts: scheduler_host
+  vars:
+    confs_dir: ./conf-files
+  tasks:
+    - name: Deploying and starting scheduler service in scheduler host
+      shell: bash install_scheduler.sh {{ confs_dir }}
+      become: yes
+- hosts: archiver_host
+  vars:
+    confs_dir: ./conf-files
+  tasks:
+    - name: Deploying and starting archiver service in archiver host
+      shell: bash install_archiver.sh {{ confs_dir }}
+      become: yes
