@@ -2,7 +2,7 @@
 
 # check if there is an exported dir from NFS server
 is_a_export_dir() {
-  local LOCAL_EXPORT_DIR=${3}
+  local LOCAL_EXPORT_DIR=${1}
   if showmount -e localhost | grep -q "${LOCAL_EXPORT_DIR}"; then
     return 0
   fi
